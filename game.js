@@ -1,6 +1,6 @@
 const debug = true;
 
-function computerPlay() {
+function chooseComputer() {
     let rnd = Math.floor(Math.random() * 3);
     let result = '';
     if (rnd === 0) {
@@ -13,7 +13,7 @@ function computerPlay() {
     return result;
 }
 
-function playRound(playerSelection, computerSelection) {
+function getResult(playerSelection, computerSelection) {
     let gameResult = '';
 
     playerSelection = playerSelection.toLowerCase();
@@ -45,31 +45,38 @@ function playRound(playerSelection, computerSelection) {
     return gameResult;
 }
 
-function game() {
-    
+function setScores(result) {
 
-    let playerScore = 0;
-    let computerScore = 0;
-    const numOfGames = 5;
+};
 
-    for (let i = 1; i <= numOfGames; i++) {
-        const playerSelection = prompt('What is your choice? / rock, paper, scissors');
-        let result = playRound(playerSelection, computerPlay());
-        if (result === 'win') {
-            playerScore++;
-        } else if (result === 'lose') {
-            computerScore++;
-        }
+function displayResult(result) {
+    const resultTextLoc = document.querySelector('#result');
+    let resultText = '';
+    switch (result) {
+        case "win":
+            resultText = 'You win!'
+            break;
+        case "lose":
+            resultText = 'You lose!'
+            break;
+        default:
+            resultText = 'It\'s a tie!'
     }
+    resultTextLoc.textContent = resultText;
+};
 
-    console.log(`Game ends. Player score: ${playerScore}, computer score: ${computerScore}`);
-    if (playerScore > computerScore) {
-        console.log('Player wins!');
-    } else {
-        console.log('Computer wins!');
-    }
+function playGame(e) {
+    const playerChoice = e.target.innerText;
+    const computerChoice = chooseComputer();
+
+    const result = getResult(playerChoice, computerChoice);
+    displayResult(result);
+
 
 }
 
+const buttons = document.querySelectorAll('.playerChoices');
 
-game();
+buttons.forEach(function (e) {
+    e.addEventListener("click", playGame);
+});
