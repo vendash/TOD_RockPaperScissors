@@ -1,5 +1,8 @@
 const debug = true;
 
+let playerScore = 0;
+let computerScore = 0;
+
 function chooseComputer() {
     let rnd = Math.floor(Math.random() * 3);
     let result = '';
@@ -46,7 +49,20 @@ function getResult(playerSelection, computerSelection) {
 }
 
 function setScores(result) {
+    if (result ==='win') {
+        playerScore++;
+    }
+    if (result === 'lose') {
+        computerScore++;
+    }
+};
 
+function displayScores() {
+    const playerScoreBox = document.querySelector('#playerScore');
+    const computerScoreBox = document.querySelector('#computerScore');
+
+    playerScoreBox.textContent = playerScore;
+    computerScoreBox.textContent = computerScore;
 };
 
 function displayResult(result) {
@@ -71,6 +87,8 @@ function playGame(e) {
 
     const result = getResult(playerChoice, computerChoice);
     displayResult(result);
+    setScores(result);
+    displayScores();
 
 
 }
