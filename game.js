@@ -49,7 +49,7 @@ function getResult(playerSelection, computerSelection) {
 }
 
 function setScores(result) {
-    if (result ==='win') {
+    if (result === 'win') {
         playerScore++;
     }
     if (result === 'lose') {
@@ -81,9 +81,93 @@ function displayResult(result) {
     resultTextLoc.textContent = resultText;
 };
 
+
+function showComputerChoice(choice) {
+    const computerChoiceImg = document.querySelector('#computerChoice');
+    const playerBorder = document.querySelector('#computer');
+    playerBorder.classList.add('computerBorderColor');
+    computerChoiceImg.classList.add('fadeOut');
+    switch (choice) {
+        case "rock":
+            computerChoiceImg.src = "assets/rock.png"
+            break;
+        case "paper":
+            computerChoiceImg.src = "assets/paper.png"
+            break;
+        default:
+            computerChoiceImg.src = "assets/scissors.png"
+    }
+}
+
+function hideComputerChoice() {
+    const computerChoiceImg = document.querySelector('#computerChoice');
+    computerChoiceImg.src = "";
+    const playerBorder = document.querySelector('#computer');
+    playerBorder.classList.remove('computerBorderColor');
+}
+
+function hidePlayerIcons() {
+    const buttons = document.querySelectorAll('.playerChoices');
+
+    buttons.forEach(function (e) {
+        e.style.display = 'none';
+    });
+}
+
+function showPlayerIcons() {
+    const buttons = document.querySelectorAll('.playerChoices');
+
+    buttons.forEach(function (e) {
+        e.style.display = 'inline';
+    });
+}
+
+function showPlayerChoice(choice) {
+    const playerChoiceLoc = document.querySelector('#player');
+    const playerChoiceImg = document.createElement('img');
+    const playerBorder = document.querySelector('#player');
+    playerBorder.classList.add('playerBorderColor');
+    playerChoiceImg.classList.add('iconBig');
+    playerChoiceImg.setAttribute('id', 'playerChoice');
+    switch (choice) {
+        case "rock":
+            playerChoiceImg.src = "assets/rock.png"
+            break;
+        case "paper":
+            playerChoiceImg.src = "assets/paper.png"
+            break;
+        default:
+            playerChoiceImg.src = "assets/scissors.png"
+    }
+    playerChoiceImg.addEventListener('click', newRound);
+    playerChoiceLoc.appendChild(playerChoiceImg);
+}
+
+function hidePlayerChoice() {
+    const playerChoiceImg = document.querySelector('#playerChoice');
+    playerChoiceImg.remove();
+    const playerBorder = document.querySelector('#player');
+    playerBorder.classList.remove('playerBorderColor');
+}
+
+function newRound() {
+    if (debug) console.log('newRound clicked');
+    hideComputerChoice();
+    hidePlayerChoice();
+    showPlayerIcons();
+}
+
 function playGame(e) {
-    const playerChoice = e.target.innerText;
+    if (debug) console.dir(e.target.dataset.value);
+
+
+
+    const playerChoice = e.target.dataset.value;
     const computerChoice = chooseComputer();
+    hidePlayerIcons();
+
+    showPlayerChoice(playerChoice);
+    showComputerChoice(computerChoice);
 
     const result = getResult(playerChoice, computerChoice);
     displayResult(result);
