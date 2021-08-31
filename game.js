@@ -2,6 +2,7 @@ const debug = true;
 
 let playerScore = 0;
 let computerScore = 0;
+const scoreToWin = 5;
 
 function chooseComputer() {
     let rnd = Math.floor(Math.random() * 3);
@@ -60,7 +61,6 @@ function setScores(result) {
 function displayScores() {
     const playerScoreBox = document.querySelector('#playerScore');
     const computerScoreBox = document.querySelector('#computerScore');
-
     playerScoreBox.textContent = playerScore;
     computerScoreBox.textContent = computerScore;
 };
@@ -157,10 +157,12 @@ function newRound() {
     showPlayerIcons();
 }
 
+function isWinner() {
+    return playerScore === scoreToWin || computerScore === scoreToWin;
+}
+
 function playGame(e) {
     if (debug) console.dir(e.target.dataset.value);
-
-
 
     const playerChoice = e.target.dataset.value;
     const computerChoice = chooseComputer();
@@ -174,6 +176,19 @@ function playGame(e) {
     setScores(result);
     displayScores();
 
+    if (isWinner()) {
+        const resultTextLoc = document.querySelector('#result');
+        if (playerScore > computerScore) {
+            resultTextLoc.textContent = "You have won the game!"
+        } else {
+            resultTextLoc.textContent = "You have lost the game!"
+        }
+        resultTextLoc.textContent = resultTextLoc.textContent + " Press F5 to play again";
+        const player = document.querySelector('#player');
+        player.style.display = 'none';
+        const computer = document.querySelector('#computer');
+        computer.style.display = 'none';
+    };    
 
 }
 
